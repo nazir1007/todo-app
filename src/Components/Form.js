@@ -1,37 +1,30 @@
-import axios from "axios";
-import { React, useState } from "react";
+import React from "react";
 
-const Form = ({ data, setData }) => {
-  const [todos, setTodos] = useState("");
-
-  //const header = { "Access-Control-Allow-origin": "'" };
-
-  //const url = "https://jsonplaceholder.typicode.com/todos";
-  const url = "http://localhost:3000/todos";
+const Form = ({ onCreate }) => {
   const handleCreate = (e) => {
     e.preventDefault();
-    const payload = {
-      title: todos,
-      completed: false,
-      userId: 1,
-    };
-    axios.post(url, payload);
-    setData([...data, payload]);
+    onCreate(e.target.title.value);
+    e.target.title.value = "";
   };
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleCreate}>
         <input
           type="text"
-          name="todos"
+          name="title"
           required
           placeholder="Enter your task"
-          onChange={(e) => setTodos(e.target.value)}
         />
-        <button type="submit" onClick={handleCreate}>
-          Create
-        </button>
+        <div className="d-grid d-md-flex justify-content-md-end">
+          <button
+            className="btn btn-secondary me-md-2"
+            type="submit"
+            onSubmit={handleCreate}
+          >
+            Create
+          </button>
+        </div>
       </form>
     </div>
   );

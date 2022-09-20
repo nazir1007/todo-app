@@ -21,7 +21,7 @@ code {
   padding: 50px;
 }
 
-h1 {
+h2 {
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -37,20 +37,13 @@ form {
 }
 
 form input,
-form button {
+form button,
+.edit-form {
   flex: 3;
   border: none;
   outline: none;
   border-bottom: 1px solid #555;
   margin: 0 5px;
-}
-
-form button {
-  flex: 1;
-  background: #555;
-  color: white;
-  letter-spacing: 2px;
-  cursor: pointer;
 }
 
 ul li {
@@ -75,45 +68,9 @@ row input {
   transform: translate(1px);
 }
 
-ul li button,
-.row button {
-  display: grid;
-  border: none;
-  outline: none;
-  color: white;
-  justify-content: space-between;
-  background: orange;
-  padding: 5px 15px;
-  cursor: pointer;
-}
-
-ul li button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-/* .btn {
-  display: grid;
-  gap: 2px;
-
-  /* d-grid gap-2 d-md-flex justify-content-md-end */
-
-/* .btn#delete {
-  display: -ms-inline-grid;
-} */
-
-button#delete {
-  display: grid;
-  flex-direction: row;
-  justify-content: space-between;
-  background: crimson;
+.edit-btn {
+  width: 2px;
+  height: 5px;
 }
 
 label {

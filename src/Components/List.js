@@ -1,65 +1,76 @@
-import { React, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-const List = ({ data, setData }) => {
-  // const header = { "Access-Control-Allow-origin": "'" };
+const List = ({ id, title, onDelete, onEdit }) => {
+  const [edit, setEdit] = useState(false);
+  const [todos, setTodos] = useState(title);
 
-  // const url = "https://jsonplaceholder.typicode.com/todos";
-  const url = "http://localhost:3000/todos";
-  const getData = () => {
-    axios.get(url).then((res) => {
-      console.log(res.data);
-      setData(res.data);
-    });
+  const handleDelete = () => {
+    onDelete(id);
   };
 
-  const handleDelete = (id) => {
-    axios.delete(`${url}/${id}`).then(() => {
-      getData();
-    });
+  const toggleFrom = () => {
+    setEdit(!edit);
+  };
+  const handleEdit = (e) => {
+    e.preventDefault();
+    onEdit(title);
+    toggleFrom();
+  };
+  const handleChange = (e) => {
+    setTodos(e.target.title);
   };
 
-  const handleUpdate = (newtodos, id) => {
-    axios.put(`${url}/${id}`, {
-      body: JSON.stringify(newtodos),
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    });
+  const toggleCompleted = (e) => {
+    toggleCompleted(e.target.id);
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  let result;
+  if (edit) {
+    result = (
+      <div className="d-grid d-md-flex justify-content-md-end">
+        <form className="edit-form" onSubmit={handleEdit}>
+          <input onChange={handleChange} value={title} type="text" />
 
-  return (
-    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-      <ul>
-        {data.map((eachData) => {
-          return (
-            <>
-              <li>
-                <label htmlFor="">
-                  <input type="checkbox" id="" />
-                  {eachData.title}
-                </label>
-                <div className="btn">
-                  <button id="edit" type="button" onClick={handleUpdate}>
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    id="delete"
-                    onClick={() => handleDelete(eachData.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            </>
-          );
-        })}
-      </ul>
-    </div>
-  );
+          <button type="button" className="btn btn-warning">
+            Save
+          </button>
+        </form>
+      </div>
+    );
+  } else {
+    result = (
+      <div>
+        <ul>
+          <li onClick={toggleCompleted}>
+            <label htmlFor="">
+              {/* <input type="checkbox" id="" /> */}
+              {title}
+            </label>
+            <div className="d-grid d-md-flex justify-content-md-end">
+              <button
+                onClick={toggleFrom}
+                className="btn btn-warning me-md-2"
+                type="button"
+
+                //onClick={handleEdit}
+              >
+                Edit
+              </button>
+
+              <button
+                className="btn btn-danger"
+                type="button"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+  return result;
 };
 
 export default List;
