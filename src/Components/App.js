@@ -7,8 +7,8 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  //const url = "https://jsonplaceholder.typicode.com/todos";
-  const url = "http://localhost:3001/todos";
+  const url = "https://jsonplaceholder.typicode.com/todos";
+  //const url = "http://localhost:3001/todos";
   const fetchData = async () => {
     await fetch(url)
       .then((res) => res.json())
@@ -49,7 +49,6 @@ const App = () => {
     await fetch(`${url}/${id}`, {
       method: "PUT",
       body: JSON.stringify({
-        id,
         title: updatedTitle,
       }),
       headers: {
@@ -59,6 +58,7 @@ const App = () => {
       .then((res) => {
         return res.json();
       })
+
       .then((data) => {
         setTodos((todos) => [...todos, data]);
       });
