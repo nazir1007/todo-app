@@ -1,14 +1,25 @@
+// -----Importing useState and useEffect Hooks   -----//
 import React, { useState, useEffect } from "react";
+
+// ---- importing Form.js file  ---//
 import Form from "./Form";
+
+// ---- importing List.js file  ---//
 import List from "./List";
 
 const App = () => {
+  //---  useState Hook  ---//
   const [todos, setTodos] = useState([]);
+
+  // --- useEffect hook   ---//
   useEffect(() => {
     fetchData();
   }, []);
+
+  //--- api Link  --- //
   const url = "https://jsonplaceholder.typicode.com/todos";
-  //const url = "http://localhost:3001/todos";
+
+  // ---- fetching Data from Api  --- //
   const fetchData = async () => {
     await fetch(url)
       .then((res) => res.json())
@@ -18,6 +29,7 @@ const App = () => {
       });
   };
 
+  // --- onCreate for creating data  --- //
   const onCreate = async (title) => {
     await fetch(url, {
       method: "POST",
@@ -45,6 +57,7 @@ const App = () => {
       });
   };
 
+  // --- onEdit for editing data --- //
   const onEdit = async (id, updatedTitle) => {
     await fetch(`${url}/${id}`, {
       method: "PUT",
@@ -60,31 +73,17 @@ const App = () => {
       })
 
       .then((data) => {
-        setTodos((todos) => [...todos, data]);
+        const editTodos = todos.map((todo) => {
+          if (todo.id === data.id) {
+            return { ...todo, title: data.title };
+          }
+          return todo;
+        });
+        setTodos(editTodos);
       });
-    // .catch((err) => {
-    //   console.log(err);
-    // });
-
-    const editTodos = todos.map((todo) => {
-      if (todo.id === todo) {
-        return { ...todo.id, title: todo.updatedTitle };
-      }
-      return todo;
-    });
-    setTodos(editTodos);
   };
 
-  // const toggleComplete = (id) => {
-  //   const editTodos = todos.map((todo) => {
-  //     if (todo.id === id) {
-  //       return { ...todo, completed: !todo.completed };
-  //     }
-  //     return todo;
-  //   });
-  //   setTodos(editTodos);
-  // };
-
+  // --- onDelete for deleting data --- //
   const onDelete = async (id) => {
     await fetch(`${url}/${id}`, {
       method: "DELETE",
@@ -104,16 +103,18 @@ const App = () => {
         console.log(err);
       });
   };
+
   return (
     <div className="App">
       <h2>TODO APP</h2>
-
+      {/* --- Form Component --- */}
       <Form onCreate={onCreate} />
       <div>
-        {todos.map((todo, i) => (
+        {todos.map((todo) => (
+          // --- List Component --- //
           <List
             id={todo.id}
-            key={i}
+            key={todo.id}
             title={todo.title}
             onEdit={onEdit}
             onDelete={onDelete}
