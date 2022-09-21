@@ -7,8 +7,8 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  const url = "https://jsonplaceholder.typicode.com/todos";
-  // const url = "http://localhost:3001/todos";
+  //const url = "https://jsonplaceholder.typicode.com/todos";
+  const url = "http://localhost:3001/todos";
   const fetchData = async () => {
     await fetch(url)
       .then((res) => res.json())
@@ -50,70 +50,39 @@ const App = () => {
       method: "PUT",
       body: JSON.stringify({
         id,
-        updatedTitle,
+        title: updatedTitle,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
       .then((res) => {
-        if (res.status !== 201) {
-          return;
-        } else {
-          return res.json();
-        }
+        return res.json();
       })
       .then((data) => {
         setTodos((todos) => [...todos, data]);
-      })
-      .catch((err) => {
-        console.log(err);
       });
-  };
+    // .catch((err) => {
+    //   console.log(err);
+    // });
 
-  //   //const editTodos = todos.map((todo) => {
-  //     if (todo.id === id) {
-  //       return { ...todo, title: updatedTitle };
-  //     }
-  //     return todo;
-  //   });
-  //   setTodos(editTodos);
-  // };
-
-  const toggleComplete = (id) => {
     const editTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, completed: !todo.completed };
+      if (todo.id === todo) {
+        return { ...todo.id, title: todo.updatedTitle };
       }
       return todo;
     });
     setTodos(editTodos);
   };
 
-  // const onEdit = async (title, id) => {
-  //   await fetch(`${url}/${id}`, {
-  //     method: "PUT",
-  //     body: JSON.stringify({
-  //       id,
-  //       title,
-  //     }),
-  //     headers: {
-  //       "Content-type": "application/json; charset=UTF-8",
-  //     },
-  //   })
-  //     .then((res) => {
-  //       if (res.status !== 201) {
-  //         return;
-  //       } else {
-  //         return res.json();
-  //       }
-  //     })
-  //     // .then((data) => {
-  //     //   setTodos((todos) => [...todos, data]);
-  //     // })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
+  // const toggleComplete = (id) => {
+  //   const editTodos = todos.map((todo) => {
+  //     if (todo.id === id) {
+  //       return { ...todo, completed: !todo.completed };
+  //     }
+  //     return todo;
+  //   });
+  //   setTodos(editTodos);
   // };
 
   const onDelete = async (id) => {
@@ -135,7 +104,6 @@ const App = () => {
         console.log(err);
       });
   };
-
   return (
     <div className="App">
       <h2>TODO APP</h2>
@@ -149,7 +117,6 @@ const App = () => {
             title={todo.title}
             onEdit={onEdit}
             onDelete={onDelete}
-            toggleComplete={toggleComplete}
           />
         ))}
       </div>

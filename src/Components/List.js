@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const List = ({ id, title, onDelete, onEdit }) => {
   const [edit, setEdit] = useState(false);
-  const [todos, setTodos] = useState(title);
+  const [todo, setTodo] = useState(title);
 
   const handleDelete = () => {
     onDelete(id);
@@ -13,15 +13,11 @@ const List = ({ id, title, onDelete, onEdit }) => {
   };
   const handleEdit = (e) => {
     e.preventDefault();
-    onEdit(title);
+    onEdit(todo);
     toggleFrom();
   };
   const handleChange = (e) => {
-    setTodos(e.target.title);
-  };
-
-  const toggleCompleted = (e) => {
-    toggleCompleted(e.target.id);
+    setTodo(e.target.value);
   };
 
   let result;
@@ -29,9 +25,9 @@ const List = ({ id, title, onDelete, onEdit }) => {
     result = (
       <div className="d-grid d-md-flex justify-content-md-end">
         <form className="edit-form" onSubmit={handleEdit}>
-          <input onChange={handleChange} value={title} type="text" />
+          <input onChange={handleChange} value={todo} type="text" />
 
-          <button type="button" className="btn btn-warning">
+          <button type="submit" className="btn btn-warning">
             Save
           </button>
         </form>
@@ -41,7 +37,7 @@ const List = ({ id, title, onDelete, onEdit }) => {
     result = (
       <div>
         <ul>
-          <li onClick={toggleCompleted}>
+          <li>
             <label htmlFor="">
               {/* <input type="checkbox" id="" /> */}
               {title}
